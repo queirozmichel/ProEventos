@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProEventos.API.Data;
 using ProEventos.API.Models;
 
 namespace ProEventos.API.Controllers
@@ -11,43 +12,23 @@ namespace ProEventos.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class EventoController : ControllerBase
-    {
-        public IEnumerable<Evento> _evento = new Evento[]{ //Ienumerable é usado só para ler um conjunto de dados
-            new Evento()
-                {
-                    EventoId = 1,
-                    Tema = "Angular 11 e Dotnet 5",
-                    Local = "Belo Horizonte",
-                    Lote = "1º lote",
-                    QtdPessoas = 250,
-                    DataEvento = DateTime.Now.AddDays(2).ToString("dd/MM/yyyy"),
-                    ImagemURL = "imagem1.png"
-                },
-                new Evento()
-                {
-                    EventoId = 2,
-                    Tema = "Angular 11 e suas novidades!",
-                    Local = "São Paulo",
-                    Lote = "2º lote",
-                    QtdPessoas = 350,
-                    DataEvento = DateTime.Now.AddDays(3).ToString("dd/MM/yyyy"),
-                    ImagemURL = "imagem2.png"
-                },
-        };
+    {        
+        private readonly DataContext _contexto;
 
-        public EventoController()
+        public EventoController(DataContext contexto)
         {
+            _contexto = contexto;
         }
 
         [HttpGet]
-        public IEnumerable<Evento> Get() 
+        public IEnumerable<Evento> Get()
         {
-            return _evento;            
+            return _contexto.Eventos;
         }
         [HttpGet("{id}")]
-        public IEnumerable<Evento> GetById(int id) 
+        public Evento GetById(int id)
         {
-            return _evento.Where(a => a.EventoId == id);            
+            return _contexto.Eventos.FirstOrDefault(a => a.EventoId == id);
         }
 
         [HttpPost]
