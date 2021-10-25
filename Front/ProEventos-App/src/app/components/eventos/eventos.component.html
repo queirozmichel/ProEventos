@@ -1,6 +1,4 @@
-<h2>Eventos</h2>
-
-<hr />
+<app-titulo [titulo] = "'Eventos'"></app-titulo>
 
 <div class="row row-cols-lg-auto g-3 align-items-center">
   <div>
@@ -28,6 +26,7 @@
           type="button"
           class="btn btn-outline-light btn-sm"
         >
+          <i class="{{ !exibirImagem ? 'fa fa-eye' : 'fa fa-eye-slash' }}"></i>
           {{ !exibirImagem ? "exibir" : "ocultar" }}
         </button>
       </th>
@@ -51,15 +50,19 @@
           [style.margin.px]="margemImagem"
         />
       </td>
-      <td class="text-center">{{ evento.eventoId }}</td>
+      <td class="text-center">{{ evento.id }}</td>
       <td class="text-center">{{ evento.tema }}</td>
       <td class="text-center">{{ evento.local }}</td>
-      <td class="text-center">{{ evento.dataEvento }}</td>
+      <td class="text-center">{{ evento.dataEvento | FormatarDateTimePipe }}</td>
       <td class="text-center">{{ evento.qtdPessoas }}</td>
-      <td class="text-center">{{ evento.lote }}</td>
+      <td class="text-center">{{ evento.lotes[0].nome | uppercase }}</td>
       <td>
-        <button type="button" class="btn btn-primary btn-sm me-md-3">Editar</button>
-        <button type="button" class="btn btn-danger btn-sm">Excluir</button>
+        <button type="button" class="btn btn-primary btn-sm me-md-3" tooltip="Editar">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+          <i class="fa fa-trash"></i>
+        </button>
       </td>
     </tr>
   </tbody>
@@ -71,3 +74,11 @@
     </tr>
   </tfoot>
 </table>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Deletar o evento?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>
