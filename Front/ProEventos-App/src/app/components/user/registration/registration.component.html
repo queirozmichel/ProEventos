@@ -1,0 +1,91 @@
+<div class="row mt-4">
+  <div class="col-md-6 d-none d-md-block" style="height: 450px">
+    <div class="text-center col-md-12 my-auto side-heder">
+      <h1 class="me-5">Cadastro de Usuário</h1>
+      <img
+        src="../../../../assets/registerImage.png"
+        class="my-4"
+        alt=""
+        width="400px"
+      />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <form class="row g-2">
+      <div class="pb-2 d-block d-md-none">
+        <h3 class="border-bottom">Cadastro de Usuário</h3>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label mt-2">Primeiro Nome:</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Insira o primeiro nome"
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label mt-2">Último Nome:</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Insira o último nome"
+        />
+      </div>
+      <div class="col-12">
+        <label for="inputAddress" class="form-label mt-2">E-mail:</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Insira o e-mail completo"
+        />
+      </div>
+      <div class="col-12">
+        <label for="inputAddress2" class="form-label mt-2">Usuário:</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Insira o nome de usuário"
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label mt-2">Senha:</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Digite uma senha"
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label mt-2">Confirmar Senha:</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Repita a senha"
+        />
+      </div>
+      <div class="col-12">
+        <div class="form-check">
+          <input class="form-check-input mt-3" type="checkbox" id="gridCheck" />
+          <label class="form-check-label mt-3" for="gridCheck">
+            Eu concordo com os
+            <a href="#" style="text-decoration: none">Termos de Uso</a>.
+          </label>
+        </div>
+      </div>
+      <div class="d-grid gap-2 col-5 mx-auto">
+        <button class="btn btn-primary mt-2" type="submit">Registrar</button>
+      </div>
+      <div class="form-row">
+        <div class="d-grid gap-2 col-5 mx-auto">
+          <a
+            class="btn btn-link btn-block"
+            style="text-decoration: none"
+            routerLink="/user/login"
+          >
+            Já sou Cadastrado
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
