@@ -5,7 +5,7 @@ import { FormatarDataHoraPipe } from './FormatarDataHora.pipe';
 
 describe('Pipe: FormatarDataHorae', () => {
   it('create an instance', () => {
-    let pipe = new FormatarDataHoraPipe();
+    let pipe = new FormatarDataHoraPipe("pt-BR");
     expect(pipe).toBeTruthy();
   });
 });

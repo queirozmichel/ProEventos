@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +8,7 @@ namespace ProEventos.Application.Dtos
     {
         public int Id { get; set; }
         public string Local { get; set; }
-        public string DataEvento { get; set; } //O ? significa que pode ser NULO
+        public DateTime DataEvento { get; set; } //O ? significa que pode ser NULO
 
         [Required(ErrorMessage = "{0} é obrigatório!")]
         [MinLength(3, ErrorMessage = "{0} deve conter no mínimo 3 caracteres!")]

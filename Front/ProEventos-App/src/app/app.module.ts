@@ -1,9 +1,10 @@
-import { NgModule } from "@angular/core";
+import { LOCALE_ID, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -17,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NgxCurrencyModule } from "ngx-currency";
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 
@@ -31,8 +33,13 @@ import { EventoListaComponent } from './components/eventos/evento-lista/evento-l
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
+import { registerLocaleData } from "@angular/common";
+import localePt from '@angular/common/locales/pt';
+import { LoteService } from "./services/lote.service";
+
 
 defineLocale('pt-br', ptBrLocale);
+registerLocaleData(localePt, 'pt');
 
 @NgModule({
   declarations: [
@@ -69,9 +76,9 @@ defineLocale('pt-br', ptBrLocale);
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgxSpinnerModule,
-    BsDatepickerModule.forRoot(),
+    NgxCurrencyModule,
   ],
-  providers: [EventoService], //injeção
+  providers: [EventoService, LoteService, {provide: LOCALE_ID, useValue: "pt"}], //injeção
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

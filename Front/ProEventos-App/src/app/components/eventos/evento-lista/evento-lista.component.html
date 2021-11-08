@@ -70,7 +70,7 @@
         <td class="text-center">{{ evento.tema }}</td>
         <td class="text-center d-none d-md-table-cell">{{ evento.local }}</td>
         <td class="text-center">
-          {{ evento.dataEvento |FormatarDateTimePipe}}
+          {{ evento.dataEvento | date:'dd/MM/yyy HH:mm':'':''}}
         </td>
         <td class="text-center d-none d-md-table-cell">
           {{ evento.qtdPessoas }}
