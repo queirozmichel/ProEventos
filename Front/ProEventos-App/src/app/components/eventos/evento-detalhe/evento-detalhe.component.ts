@@ -16,6 +16,7 @@ import { Evento } from "src/app/models/Evento";
 import { Lote } from "src/app/models/Lote";
 import { EventoService } from "src/app/services/evento.service";
 import { LoteService } from "src/app/services/lote.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-evento-detalhe",
@@ -29,6 +30,8 @@ export class EventoDetalheComponent implements OnInit {
   novoEventoOuSalvarVelho = "post";
   modalRef: BsModalRef;
   loteAtual = { id: 0, nome: "", indice: 0 };
+  imagemURL = "assets/upload.png";
+  file: File;
 
   get f(): any {
     return this.formulario.controls;
@@ -61,6 +64,10 @@ export class EventoDetalheComponent implements OnInit {
         next: (evento: Evento) => {
           this.evento = { ...evento }; //...spread
           this.formulario.patchValue(this.evento);
+          if (this.evento.imagemURL != "") {
+            this.imagemURL =
+              environment.apiURL + "resources/images/" + this.evento.imagemURL;
+          }
           this.carregarLotes();
         },
         error: (error: any) => {
@@ -92,7 +99,7 @@ export class EventoDetalheComponent implements OnInit {
       qtdPessoas: ["", [Validators.required, Validators.max(120000)]],
       telefone: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
-      imagemURL: ["", Validators.required],
+      imagemURL: [""],
       lotes: this.fb.array([]),
     });
   }
@@ -233,5 +240,30 @@ export class EventoDetalheComponent implements OnInit {
 
   public declineDeleteLote(): void {
     this.modalRef.hide();
+  }
+
+  public onFileChange(ev: any): void {
+    const reader = new FileReader();
+    reader.onload = (evento: any) => (this.imagemURL = evento.target.result);
+    this.file = ev.target.files;
+    reader.readAsDataURL(this.file[0]);
+    this.uploadImagem();
+  }
+
+  public uploadImagem(): void {
+    this.efeitoSpinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe({
+      next: () => {
+        // this.rota.navigate([`eventos/detalhe/${this.eventoId}`]);
+        this.carregarEvento();
+        this.efeitoToaster.success("Imagem atualizada com sucesso!", "Sucesso");
+      },
+      error: (error: any) => {
+        this.efeitoToaster.error("Erro ao carregar a imagem!", "Erro");
+        console.log(error);
+        this.efeitoSpinner.hide();
+      },
+      complete: () => this.efeitoSpinner.hide(),
+    });
   }
 }

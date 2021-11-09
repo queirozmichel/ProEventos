@@ -1,253 +1,317 @@
-<div class="card rounded shadow mb-5">
-  <form [formGroup]="formulario">
-    <!-- <p>Form valores: {{formulario.value | json }}</p>
-    <p>Form status: {{formulario.status | json }}</p> -->
-
-    <div class="row px-4">
-      <div class="col-lg-12">
-        <div class="row mt-2">
-          <div class="col-md-12">
-            <label class="form-label">Tema</label>
-            <input
-              type="text"
-              class="form-control"
-              [ngClass]="cssValidacao(f.tema)"
-              formControlName="tema"
-              placeholder="Insira o Tema"
-            />
-            <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
-              O tema é obrigatório
-            </div>
-            <div *ngIf="f.tema.errors?.minlength" class="invalid-feedback">
-              Mínimo de 5 caracteres
-            </div>
-            <div *ngIf="f.tema.errors?.maxlength" class="invalid-feedback">
-              Máximo de 50 caracteres
-            </div>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-md-8">
-            <label class="form-label">Local</label>
-            <input
-              type="text"
-              class="form-control"
-              [ngClass]="cssValidacao(f.local)"
-              formControlName="local"
-            />
-            <div *ngIf="f.local.errors?.required" class="invalid-feedback">
-              O local é obrigatório
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Data e Hora</label>
-            <input
-              type="datetime-local"
-              class="form-control"
-              [ngClass]="cssValidacao(f.dataEvento)"
-              formControlName="dataEvento"
-            />
-            <div *ngIf="f.dataEvento.errors?.required" class="invalid-feedback">
-              Data e hora são obrigatórios
-            </div>
-          </div>
-        </div>
-        <div class="row my-4">
-          <div class="col-md-2">
-            <label class="form-label">Quantidade de Pessoas</label>
-            <input
-              type="number"
-              class="form-control"
-              [ngClass]="cssValidacao(f.qtdPessoas)"
-              formControlName="qtdPessoas"
-            />
-            <div *ngIf="f.qtdPessoas.errors?.required" class="invalid-feedback">
-              A quantidade de pessoas é obrigatória
-            </div>
-            <div *ngIf="f.qtdPessoas.errors?.max" class="invalid-feedback">
-              A quantidade de pessoas deve ser menor que 120.000
-            </div>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Telefone</label>
-            <input
-              type="text"
-              class="form-control"
-              [ngClass]="cssValidacao(f.telefone)"
-              formControlName="telefone"
-              placeholder="(00)00000-0000"
-            />
-            <div *ngIf="f.telefone.errors?.required" class="invalid-feedback">
-              O telefone é obrigatório
-            </div>
-          </div>
-          <div class="col-md-5">
-            <label class="form-label">E-mail</label>
-            <input
-              type="email"
-              class="form-control"
-              [ngClass]="cssValidacao(f.email)"
-              formControlName="email"
-            />
-            <div *ngIf="f.email.errors?.required" class="invalid-feedback">
-              O e-mail é obrigatório
-            </div>
-            <div *ngIf="f.email.errors?.email" class="invalid-feedback">
-              O e-mail precisa ser válido
-            </div>
-          </div>
-
-          <div class="col-md-3">
-            <label class="form-label">Imagem</label>
-            <input
-              type="text"
-              class="form-control is-invalid"
-              [ngClass]="cssValidacao(f.imagemURL)"
-              formControlName="imagemURL"
-            />
-            <div *ngIf="f.imagemURL.errors?.required" class="invalid-feedback">
-              A imagem é obrigatória
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card-footer">
-      <div class="d-flex justify-content-evenly">
-        <button
-          class="btn btn-outline-secondary mr-auto border"
-          (click)="resetarForm()"
-        >
-          Cancelar Alterações
-        </button>
-        <button
-          class="btn btn-success mr-auto border"
-          [disabled]="!formulario.valid"
-          (click)="salvarEvento()"
-        >
-          Salvar Evento
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
-
-<div class="card rounded shadow mb-5" *ngIf="modoEditar">
-  <!-- <p>Form valores: {{formulario.controls.lotes.value | json }}</p>
-    <p>Form status: {{formulario.controls.lotes.status | json }}</p> -->
-  <div class="p-4">
-    <div class="d-flex justify-content-between border-bottom">
-      <h2 class="mr-auto">Lotes do Evento</h2>
-      <h2>
-        <i class="fas fa-money-bill-wave"></i>
-      </h2>
-    </div>
-    <p class="border-top">
-      Clique em Lote para adicionar e preencher novos Lotes
-    </p>
-    <div class="form-row p-1">
-      <div [formGroup]="formulario" class="col">
-        <div
-          formArrayName="lotes"
-          *ngFor="let lote of lotes.controls; let i = index"
-        >
-          <fieldset [formGroupName]="i" class="form-group">
-            <legend class="d-flex justify-content-between capitalize">
-              {{ retornaTituloLote(lotes.get(i + ".nome").value) }}
-              <button
-                (click)="removerLote(template, i)"
-                class="p-2 btn btn-outline-warning my-3 d-flex"
-                tooltip="Excluir Lote"
-                [adaptivePosition]="false"
-                [delay]="500"
-                placement="left"
-              >
-                <i class="fa fa-window-close my-1"></i>
-                <b class="ml-1">Excluir</b>
-              </button>
-            </legend>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label>Nome</label>
+<div class="row">
+  <div [ngClass]="{ 'col-md-8': modoEditar, 'col-md-12': !modoEditar }">
+    <div class="card rounded shadow mb-3">
+      <form [formGroup]="formulario">
+        <!-- <p>Form valores: {{formulario.value | json }}</p>
+        <p>Form status: {{formulario.status | json }}</p> -->
+        <div class="row px-4">
+          <div class="col-lg-12">
+            <div class="row mt-2">
+              <div class="col-md-12">
+                <label class="form-label">Tema</label>
                 <input
-                  [ngClass]="cssValidacao(lotes.get(i + '.nome'))"
                   type="text"
                   class="form-control"
-                  formControlName="nome"
-                  placeholder="Lote"
+                  [ngClass]="cssValidacao(f.tema)"
+                  formControlName="tema"
+                  placeholder="Insira o Tema"
+                  [(ngModel)]="evento.tema"
                 />
+                <div *ngIf="f.tema.errors?.required" class="invalid-feedback">
+                  O tema é obrigatório
+                </div>
+                <div *ngIf="f.tema.errors?.minlength" class="invalid-feedback">
+                  Mínimo de 5 caracteres
+                </div>
+                <div *ngIf="f.tema.errors?.maxlength" class="invalid-feedback">
+                  Máximo de 50 caracteres
+                </div>
               </div>
-              <div class="form-group col-md-4">
-                <label>Quantidade</label>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-8">
+                <label class="form-label">Local</label>
                 <input
-                  [ngClass]="cssValidacao(lotes.get(i + '.quantidade'))"
                   type="text"
                   class="form-control"
-                  formControlName="quantidade"
-                  placeholder="000"
+                  [ngClass]="cssValidacao(f.local)"
+                  formControlName="local"
+                  [(ngModel)]="evento.local"
                 />
+                <div *ngIf="f.local.errors?.required" class="invalid-feedback">
+                  O local é obrigatório
+                </div>
               </div>
-              <div class="form-group col-md-4">
-                <label>Preço</label>
+              <div class="col-md-4">
+                <label class="form-label">Data e Hora</label>
                 <input
-                  [ngClass]="cssValidacao(lotes.get(i + '.preco'))"
-                  type="text"
-                  currencyMask
-                  [options]="{
-                    align: 'left',
-                    prefix: 'R$ ',
-                    thousands: '.',
-                    decimal: ','
-                  }"
-                  class="form-control"
-                  formControlName="preco"
-                  placeholder="R$ 0,00"
-                />
-              </div>
-              <div class="form-group col-md-4 mt-3">
-                <label>Data Início</label>
-                <input
-                  [ngClass]="cssValidacao(lotes.get(i + '.dataInicio'))"
                   type="datetime-local"
                   class="form-control"
-                  formControlName="dataInicio"
+                  [ngClass]="cssValidacao(f.dataEvento)"
+                  formControlName="dataEvento"
+                  [(ngModel)]="evento.dataEvento"
                 />
-              </div>
-              <div class="form-group col-md-4 mt-3">
-                <label>Data Fim</label>
-                <input
-                  [ngClass]="cssValidacao(lotes.get(i + '.dataFim'))"
-                  type="datetime-local"
-                  class="form-control"
-                  formControlName="dataFim"
-                />
+                <div
+                  *ngIf="f.dataEvento.errors?.required"
+                  class="invalid-feedback"
+                >
+                  Data e hora são obrigatórios
+                </div>
               </div>
             </div>
-          </fieldset>
+            <div class="row my-4">
+              <div class="col-md-2">
+                <label class="form-label">Capacidade</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [ngClass]="cssValidacao(f.qtdPessoas)"
+                  formControlName="qtdPessoas"
+                  [(ngModel)]="evento.qtdPessoas"
+                />
+                <div
+                  *ngIf="f.qtdPessoas.errors?.required"
+                  class="invalid-feedback"
+                >
+                  A quantidade de pessoas é obrigatória
+                </div>
+                <div *ngIf="f.qtdPessoas.errors?.max" class="invalid-feedback">
+                  A quantidade de pessoas deve ser menor que 120.000
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Telefone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [ngClass]="cssValidacao(f.telefone)"
+                  formControlName="telefone"
+                  placeholder="(00)00000-0000"
+                  [(ngModel)]="evento.telefone"
+                />
+                <div
+                  *ngIf="f.telefone.errors?.required"
+                  class="invalid-feedback"
+                >
+                  O telefone é obrigatório
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">E-mail</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [ngClass]="cssValidacao(f.email)"
+                  formControlName="email"
+                  [(ngModel)]="evento.email"
+                />
+                <div *ngIf="f.email.errors?.required" class="invalid-feedback">
+                  O e-mail é obrigatório
+                </div>
+                <div *ngIf="f.email.errors?.email" class="invalid-feedback">
+                  O e-mail precisa ser válido
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-evenly">
+            <button
+              class="btn btn-outline-secondary mr-auto border"
+              (click)="resetarForm()"
+            >
+              Cancelar Alterações
+            </button>
+            <button
+              class="btn btn-success mr-auto border"
+              [disabled]="!formulario.valid"
+              (click)="salvarEvento()"
+            >
+              Salvar Evento
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card rounded shadow mb-5" *ngIf="modoEditar">
+      <!-- <p>Form valores: {{formulario.controls.lotes.value | json }}</p>
+        <p>Form status: {{formulario.controls.lotes.status | json }}</p> -->
+      <div class="p-4">
+        <div class="d-flex justify-content-between border-bottom">
+          <h2 class="mr-auto">Lotes do Evento</h2>
+          <h2>
+            <i class="fas fa-money-bill-wave"></i>
+          </h2>
+        </div>
+        <p class="border-top">
+          Clique em Lote para adicionar e preencher novos Lotes
+        </p>
+        <div class="form-row p-1">
+          <div [formGroup]="formulario" class="col">
+            <div
+              formArrayName="lotes"
+              *ngFor="let lote of lotes.controls; let i = index"
+            >
+              <fieldset [formGroupName]="i" class="form-group">
+                <legend class="d-flex justify-content-between capitalize">
+                  {{ retornaTituloLote(lotes.get(i + ".nome").value) }}
+                  <button
+                    (click)="removerLote(template, i)"
+                    class="p-2 btn btn-outline-warning my-3 d-flex"
+                    tooltip="Excluir Lote"
+                    [adaptivePosition]="false"
+                    [delay]="500"
+                    placement="left"
+                  >
+                    <i class="fa fa-window-close my-1"></i>
+                    <b class="ml-1">Excluir</b>
+                  </button>
+                </legend>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>Nome</label>
+                    <input
+                      [ngClass]="cssValidacao(lotes.get(i + '.nome'))"
+                      type="text"
+                      class="form-control"
+                      formControlName="nome"
+                      placeholder="Lote"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Quantidade</label>
+                    <input
+                      [ngClass]="cssValidacao(lotes.get(i + '.quantidade'))"
+                      type="text"
+                      class="form-control"
+                      formControlName="quantidade"
+                      placeholder="000"
+                    />
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Preço</label>
+                    <input
+                      [ngClass]="cssValidacao(lotes.get(i + '.preco'))"
+                      type="text"
+                      currencyMask
+                      [options]="{
+                        align: 'left',
+                        prefix: 'R$ ',
+                        thousands: '.',
+                        decimal: ','
+                      }"
+                      class="form-control"
+                      formControlName="preco"
+                      placeholder="R$ 0,00"
+                    />
+                  </div>
+                  <div class="form-group col-md-4 mt-3">
+                    <label>Data Início</label>
+                    <input
+                      [ngClass]="cssValidacao(lotes.get(i + '.dataInicio'))"
+                      type="datetime-local"
+                      class="form-control"
+                      formControlName="dataInicio"
+                    />
+                  </div>
+                  <div class="form-group col-md-4 mt-3">
+                    <label>Data Fim</label>
+                    <input
+                      [ngClass]="cssValidacao(lotes.get(i + '.dataFim'))"
+                      type="datetime-local"
+                      class="form-control"
+                      formControlName="dataFim"
+                    />
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+        <button
+          (click)="addLote()"
+          class="p-2 d-flex btn btn-outline-primary ms-1 mt-3"
+          tooltip="Novo Lote"
+        >
+          <i class="fa fa-plus-circle my-1"></i>
+          <b class="ml-1">Lote</b>
+        </button>
+      </div>
+      <div class="card-footer">
+        <div class="d-flex justify-content-evenly">
+          <button class="btn btn-outline-secondary mr-auto border">
+            Cancelar Alterações
+          </button>
+          <button
+            class="btn btn-success mr-auto border"
+            [disabled]="!formulario.valid"
+            (click)="salvarLotes()"
+          >
+            Salvar Lotes
+          </button>
         </div>
       </div>
     </div>
-    <button
-      (click)="addLote()"
-      class="p-2 d-flex btn btn-outline-primary ms-1 mt-3"
-      tooltip="Novo Lote"
-    >
-      <i class="fa fa-plus-circle my-1"></i>
-      <b class="ml-1">Lote</b>
-    </button>
   </div>
-  <div class="card-footer">
-    <div class="d-flex justify-content-evenly">
-      <button class="btn btn-outline-secondary mr-auto border">
-        Cancelar Alterações
-      </button>
-      <button
-        class="btn btn-success mr-auto border"
-        [disabled]="!formulario.valid"
-        (click)="salvarLotes()"
-      >
-        Salvar Lotes
-      </button>
+  <div class="col-md-4" *ngIf="modoEditar">
+    <div [formGroup]="formulario" class="card-evento-view shadow-sm">
+      <div class="form-row">
+        <div class="form-group m-0">
+          <input
+            type="file"
+            #file
+            (change)="onFileChange($event)"
+            class="form-control is-invalid"
+            placeholder=""
+            style="display: none"
+          />
+        </div>
+      </div>
+      <div class="card profile-card-2">
+        <div class="card-img-block">
+          <img
+            class="image"
+            [src]="imagemURL"
+            class="img-fluid"
+            (click)="file.click()"
+            alt="Card image cap"
+            tooltip="Uplaod de Nova Imagem"
+            [adaptivePosition]="false"
+            placement="bottom"
+          />
+        </div>
+        <div class="card-body pt-3">
+          <h4>{{ evento.tema }}</h4>
+          <p class="card-text">
+            <b>Local:</b> {{ evento.local }}
+            <br />
+            <b>Data:</b> {{ evento.dataEvento }}
+          </p>
+          <hr />
+          <p class="card-text">
+            <b>Contatos</b><br />
+            <small class="text-muted">Telefone: {{ evento.telefone }}</small>
+            <br />
+            <small class="text-muted">e-mail: {{ evento.email }}</small>
+          </p>
+          <p class="card-text">
+            Capacidade:
+            <small class="text-muted">{{ evento.qtdPessoas }}</small>
+          </p>
+          <div class="row">
+            <div class="icon-block col-md-8 iconesSociais">
+              <a href="">
+                <i class=""></i>
+              </a>
+            </div>
+            <!--div class="col-md-4 d-flex justify-content-center">
+              <a href="#" class="btn btn-outline-primary">Participar</a>
+            </div-->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

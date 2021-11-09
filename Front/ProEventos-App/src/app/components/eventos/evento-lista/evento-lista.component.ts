@@ -5,6 +5,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { Evento } from "src/app/models/Evento";
 import { EventoService } from "src/app/services/evento.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-evento-lista",
@@ -15,7 +16,7 @@ export class EventoListaComponent implements OnInit {
   modalRef?: BsModalRef;
   public eventos: Evento[] = []; //array de objetos
   public eventosFiltrados: Evento[] = [];
-  public larguraImagem: number = 150;
+  public larguraImagem: number = 180;
   public margemImagem: number = 2;
   public exibirImagem: boolean = true;
   private _filtroLista: string = "";
@@ -56,6 +57,12 @@ export class EventoListaComponent implements OnInit {
 
   public exibirOcultarImagem(): void {
     this.exibirImagem = !this.exibirImagem;
+  }
+
+  public mostraImagem(imagemURL: string): string {
+    return imagemURL != ""
+      ? `${environment.apiURL}resources/images/${imagemURL}`
+      : "assets/semImagem.png";
   }
 
   public carregarEventos(): void {
