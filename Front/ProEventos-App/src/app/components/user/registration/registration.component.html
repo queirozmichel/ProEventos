@@ -11,7 +11,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <form class="row g-2" [formGroup]="formulario">
+    <form class="row g-2" [formGroup]="formulario" (ngSubmit)="registerUser()">
       <div class="pb-2 d-block d-md-none">
         <h3 class="border-bottom">Cadastro de Usuário</h3>
       </div>
@@ -85,21 +85,21 @@
         <input
           type="password"
           class="form-control"
-          [ngClass]="{ 'is-invalid': f.senha.errors && f.senha.touched }"
-          formControlName="senha"
+          [ngClass]="{ 'is-invalid': f.password.errors && f.password.touched }"
+          formControlName="password"
           placeholder="Digite uma senha"
         />
         <div
-          *ngIf="f.senha.errors?.required && f.senha.touched"
+          *ngIf="f.password.errors?.required && f.password.touched"
           class="invalid-feedback"
         >
           A senha é obrigatória
         </div>
         <div
-          *ngIf="f.senha.errors?.minlength && f.senha.touched"
+          *ngIf="f.password.errors?.minlength && f.password.touched"
           class="invalid-feedback"
         >
-          Deve conter no mínimo 6 caracteres
+          Deve conter no mínimo 4 caracteres
         </div>
       </div>
       <div class="col-md-6">
@@ -108,25 +108,25 @@
           type="password"
           class="form-control"
           [ngClass]="{
-            'is-invalid': f.confirmarSenha.errors && f.confirmarSenha.touched
+            'is-invalid': f.confirmarPassword.errors && f.confirmarPassword.touched
           }"
-          formControlName="confirmarSenha"
+          formControlName="confirmarPassword"
           placeholder="Repita a senha"
         />
         <div
-          *ngIf="f.confirmarSenha.errors?.required && f.confirmarSenha.touched"
+          *ngIf="f.confirmarPassword.errors?.required && f.confirmarPassword.touched"
           class="invalid-feedback"
         >
           Confirmar a senha é obrigatório
         </div>
         <div
-          *ngIf="f.confirmarSenha.errors?.minlength && f.confirmarSenha.touched"
+          *ngIf="f.confirmarPassword.errors?.minlength && f.confirmarPassword.touched"
           class="invalid-feedback"
         >
           Deve conter no mínimo 6 caracteres
         </div>
         <div
-          *ngIf="f.confirmarSenha.errors?.mustMatch && f.confirmarSenha.touched"
+          *ngIf="f.confirmarPassword.errors?.mustMatch && f.confirmarPassword.touched"
           class="invalid-feedback"
         >
           As senhas devem coincidir

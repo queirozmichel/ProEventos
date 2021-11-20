@@ -19,8 +19,8 @@ namespace ProEventos.Application
         private readonly IMapper _mapper;
         private readonly IUserPersist _userPersist;
 
-        public AccountService(UserManager<User> userManager, 
-        SignInManager<User> signInManager, IMapper mapper, 
+        public AccountService(UserManager<User> userManager,
+        SignInManager<User> signInManager, IMapper mapper,
         IUserPersist userPersist)
         {
             _userPersist = userPersist;
@@ -42,7 +42,7 @@ namespace ProEventos.Application
             }
         }
 
-        public async Task<UserDto> CreateAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> CreateAccountAsync(UserDto userDto)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace ProEventos.Application
                 var result = await _userManager.CreateAsync(user, userDto.Password);
                 if (result.Succeeded)
                 {
-                    var userToReturn = _mapper.Map<UserDto>(user);
+                    var userToReturn = _mapper.Map<UserUpdateDto>(user);
                     return userToReturn;
                 }
                 return null;
@@ -84,11 +84,15 @@ namespace ProEventos.Application
                 var user = await _userPersist.GetUserByUserNameAsync(userUpdateDto.UserName);
                 if (user == null) return null;
 
+                userUpdateDto.Id = user.Id;
+
                 _mapper.Map(userUpdateDto, user);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                if (userUpdateDto.Password != null)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                }
 
                 _userPersist.Updade<User>(user);
 

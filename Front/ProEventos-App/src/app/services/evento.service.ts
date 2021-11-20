@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Evento } from "../models/Evento";
@@ -12,7 +12,9 @@ export class EventoService {
   private baseURL = environment.apiURL + "api/eventos";
 
   public getEventos(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.baseURL).pipe(take(1)); // pipe().take(1) executa uma vez e se desinscreve
+    return this.http
+      .get<Evento[]>(this.baseURL)
+      .pipe(take(1)); // pipe().take(1) executa uma vez e se desinscreve
   }
   public getEventosByTema(tema: string): Observable<Evento[]> {
     return this.http
