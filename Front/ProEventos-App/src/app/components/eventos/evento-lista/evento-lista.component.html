@@ -9,7 +9,7 @@
           type="text"
           class="form-control"
           placeholder="Buscar por Tema e Local"
-          [(ngModel)]="filtroLista"
+          (input)="filtrarEventos($event.target)"
         />
       </div>
     </div>
@@ -53,7 +53,7 @@
     </thead>
     <tbody *ngIf="eventos && eventos.length">
       <tr
-        *ngFor="let evento of eventosFiltrados"
+        *ngFor="let evento of eventos"
         (click)="detalheEvento(evento.id)"
         style="cursor: pointer"
       >
@@ -70,7 +70,7 @@
         <td class="text-center">{{ evento.tema }}</td>
         <td class="text-center d-none d-md-table-cell">{{ evento.local }}</td>
         <td class="text-center">
-          {{ evento.dataEvento | date:'dd/MM/yyy HH:mm':'':''}}
+          {{ evento.dataEvento | date: "dd/MM/yyy HH:mm":"":"" }}
         </td>
         <td class="text-center d-none d-md-table-cell">
           {{ evento.qtdPessoas }}
@@ -98,11 +98,26 @@
       </tr>
     </tfoot>
   </table>
+  <div class="d-flex justify-content-center">
+    <pagination
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      pageBtnClass="btn"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
 </div>
 
 <ng-template #template>
   <div class="modal-body text-center">
-    <p>Deletar o evento {{this.eventoId}}?</p>
+    <p>Deletar o evento {{ this.eventoId }}?</p>
     <button type="button" class="btn btn-default" (click)="confirm()">
       Sim
     </button>

@@ -38,6 +38,7 @@ import { LoteService } from "./services/lote.service";
 import { AccountService } from "./services/account.service";
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 import { HomeComponent } from "./components/home/home.component";
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 defineLocale("pt-br", ptBrLocale);
 registerLocaleData(localePt, "pt");
@@ -79,6 +80,7 @@ registerLocaleData(localePt, "pt");
     BsDropdownModule.forRoot(),
     NgxSpinnerModule,
     NgxCurrencyModule,
+    PaginationModule.forRoot(),
   ],
   providers: [
     AccountService,
