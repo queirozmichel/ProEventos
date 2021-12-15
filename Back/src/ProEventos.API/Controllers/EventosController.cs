@@ -31,7 +31,7 @@ namespace ProEventos.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]PageParams pageParams)
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
         {
 
             try
@@ -42,7 +42,7 @@ namespace ProEventos.API.Controllers
                     return NoContent();
                 }
 
-                Response.AddPagination(eventos.CurrentPage, eventos.PageSize,eventos.TotalCount, eventos.TotalPages);
+                Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
 
                 return Ok(eventos);
             }
@@ -92,7 +92,7 @@ namespace ProEventos.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar adicionar os eventos! Erro:{ex.Message}");
+                $"Erro ao tentar realizar o upload de foto do evento! Erro:{ex.Message}");
             }
         }
 
