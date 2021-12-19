@@ -183,7 +183,12 @@ export class EventoDetalheComponent implements OnInit {
               "Erro!"
             );
           },
-          complete: () => this.efeitoSpinner.hide(),
+          complete: () => {
+            this.efeitoSpinner.hide();
+            // this.carregarLotes();
+            // this.rota.navigateByUrl()
+            this.rota.navigate([`/eventos/lista`]);
+          },
         });
     }
   }

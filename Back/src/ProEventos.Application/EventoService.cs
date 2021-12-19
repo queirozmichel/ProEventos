@@ -40,7 +40,7 @@ namespace ProEventos.Application
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }        
+            }
         }
         public async Task<EventoDto> UpdateEvento(int userId, int eventoId, EventoDto model)
         {
@@ -56,7 +56,7 @@ namespace ProEventos.Application
                 model.Id = eventoId;
                 model.UserId = userId;
                 _mapper.Map(model, evento);
-                _geralPersist.Updade<Evento>(evento);
+                _geralPersist.Update<Evento>(evento);
 
                 if (await _geralPersist.SaveChangesAsync())
                 {
@@ -68,7 +68,7 @@ namespace ProEventos.Application
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }            
+            }
         }
 
         public async Task<bool> DeleteEvento(int userId, int eventoId)
@@ -105,7 +105,7 @@ namespace ProEventos.Application
                 resultado.PageSize = eventos.PageSize;
                 resultado.TotalCount = eventos.TotalCount;
 
-                return resultado;                
+                return resultado;
             }
             catch (Exception ex)
             {
@@ -126,6 +126,6 @@ namespace ProEventos.Application
             {
                 throw new Exception(ex.Message);
             }
-        }        
+        }
     }
 }

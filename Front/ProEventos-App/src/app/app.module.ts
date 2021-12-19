@@ -20,6 +20,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { NgxCurrencyModule } from "ngx-currency";
 import { defineLocale } from "ngx-bootstrap/chronos";
 import { ptBrLocale } from "ngx-bootstrap/locale";
+import { TabsModule } from "ngx-bootstrap/tabs";
 
 import { EventoService } from "./services/evento.service";
 import { FormatarDataHoraPipe } from "./helpers/FormatarDataHora.pipe";
@@ -38,7 +39,11 @@ import { LoteService } from "./services/lote.service";
 import { AccountService } from "./services/account.service";
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
 import { HomeComponent } from "./components/home/home.component";
-import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PaginationModule } from "ngx-bootstrap/pagination";
+import { PerfilDetalheComponent } from "./components/user/perfil/perfil-detalhe/perfil-detalhe.component";
+import { PalestranteListaComponent } from "./components/palestrantes/palestrante-lista/palestrante-lista.component";
+import { PalestranteDetalheComponent } from "./components/palestrantes/palestrante-detalhe/palestrante-detalhe.component";
+import { RedesSociaisComponent } from "./components/redesSociais/redesSociais.component";
 
 defineLocale("pt-br", ptBrLocale);
 registerLocaleData(localePt, "pt");
@@ -48,9 +53,13 @@ registerLocaleData(localePt, "pt");
     AppComponent,
     EventosComponent,
     PalestrantesComponent,
+    PalestranteListaComponent,
+    PalestranteDetalheComponent,
+    RedesSociaisComponent,
     ContatosComponent,
     DashboardComponent,
     PerfilComponent,
+    PerfilDetalheComponent,
     TituloComponent,
     NavComponent,
     FormatarDataHoraPipe,
@@ -81,6 +90,7 @@ registerLocaleData(localePt, "pt");
     NgxSpinnerModule,
     NgxCurrencyModule,
     PaginationModule.forRoot(),
+    TabsModule.forRoot(),
   ],
   providers: [
     AccountService,

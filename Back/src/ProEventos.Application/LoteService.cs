@@ -40,7 +40,7 @@ namespace ProEventos.Application
         {
             try
             {
-                var lotes = await _lotePersist.GetLotesByEventoIdAsync(eventoId);
+                Lote[] lotes = await _lotePersist.GetLotesByEventoIdAsync(eventoId);
 
                 if (lotes == null)
                 {
@@ -49,7 +49,7 @@ namespace ProEventos.Application
 
                 foreach (var model in models)
                 {
-                    if (model.Id ==0)
+                    if (model.Id == 0)
                     {
                         await AddLote(eventoId, model); //é chamado quando for adicionar um lote novo
                     }
@@ -58,7 +58,7 @@ namespace ProEventos.Application
                         var lote = lotes.FirstOrDefault(lote => lote.Id == model.Id);
                         model.EventoId = eventoId;
                         _mapper.Map(model, lote);
-                        _geralPersist.Updade<Lote>(lote);
+                        _geralPersist.Update<Lote>(lote);
                         await _geralPersist.SaveChangesAsync();
                     }
                 }

@@ -18,23 +18,24 @@ namespace ProEventos.Application
             _mapper = mapper;
             _redeSocialPersist = redeSocialPersist;
         }
+
         public async Task AddRedeSocial(int Id, RedeSocialDto model, bool isEvento)
         {
             try
             {
-                var redeSocial = _mapper.Map<RedeSocial>(model);
+                var RedeSocial = _mapper.Map<RedeSocial>(model);
                 if (isEvento)
                 {
-                    redeSocial.EventoId = Id;
-                    redeSocial.PalestranteId = null;
+                    RedeSocial.EventoId = Id;
+                    RedeSocial.PalestranteId = null;
                 }
                 else
                 {
-                    redeSocial.PalestranteId = Id;
-                    redeSocial.EventoId = null;
+                    RedeSocial.EventoId = null;
+                    RedeSocial.PalestranteId = Id;
                 }
 
-                _redeSocialPersist.Add<RedeSocial>(redeSocial);
+                _redeSocialPersist.Add<RedeSocial>(RedeSocial);
 
                 await _redeSocialPersist.SaveChangesAsync();
             }
@@ -43,34 +44,36 @@ namespace ProEventos.Application
                 throw new Exception(ex.Message);
             }
         }
+
         public async Task<RedeSocialDto[]> SaveByEvento(int eventoId, RedeSocialDto[] models)
         {
             try
             {
-                var redesSociais = await _redeSocialPersist.GetAllByEventoIdAsync(eventoId);
-
-                if (redesSociais == null)
-                {
-                    return null;
-                }
+                var RedeSocials = await _redeSocialPersist.GetAllByEventoIdAsync(eventoId);
+                if (RedeSocials == null) return null;
 
                 foreach (var model in models)
                 {
                     if (model.Id == 0)
                     {
-                        await AddRedeSocial(eventoId, model, true); //é chamado quando for adicionar uma rede nova
+                        await AddRedeSocial(eventoId, model, true);
                     }
                     else
-                    {                        //é chamado quando for atualizar um lote
-                        var redeSocial = redesSociais.FirstOrDefault(rs => rs.Id == model.Id);
+                    {
+                        var RedeSocial = RedeSocials.FirstOrDefault(RedeSocial => RedeSocial.Id == model.Id);
                         model.EventoId = eventoId;
-                        _mapper.Map(model, redeSocial);
-                        _redeSocialPersist.Updade<RedeSocial>(redeSocial);
+
+                        _mapper.Map(model, RedeSocial);
+
+                        _redeSocialPersist.Update<RedeSocial>(RedeSocial);
+
                         await _redeSocialPersist.SaveChangesAsync();
                     }
                 }
-                var redeSocialRetorno = await _redeSocialPersist.GetAllByEventoIdAsync(eventoId);
-                return _mapper.Map<RedeSocialDto[]>(redeSocialRetorno);
+
+                var RedeSocialRetorno = await _redeSocialPersist.GetAllByEventoIdAsync(eventoId);
+
+                return _mapper.Map<RedeSocialDto[]>(RedeSocialRetorno);
             }
             catch (Exception ex)
             {
@@ -82,30 +85,31 @@ namespace ProEventos.Application
         {
             try
             {
-                var redesSociais = await _redeSocialPersist.GetAllByPalestranteIdAsync(palestranteId);
-
-                if (redesSociais == null)
-                {
-                    return null;
-                }
+                var RedeSocials = await _redeSocialPersist.GetAllByPalestranteIdAsync(palestranteId);
+                if (RedeSocials == null) return null;
 
                 foreach (var model in models)
                 {
                     if (model.Id == 0)
                     {
-                        await AddRedeSocial(palestranteId, model, false); //é chamado quando for adicionar uma rede nova
+                        await AddRedeSocial(palestranteId, model, false);
                     }
                     else
-                    {                        //é chamado quando for atualizar um lote
-                        var redeSocial = redesSociais.FirstOrDefault(rs => rs.Id == model.Id);
-                        model.EventoId = palestranteId;
-                        _mapper.Map(model, redeSocial);
-                        _redeSocialPersist.Updade<RedeSocial>(redeSocial);
+                    {
+                        var RedeSocial = RedeSocials.FirstOrDefault(RedeSocial => RedeSocial.Id == model.Id);
+                        model.PalestranteId = palestranteId;
+
+                        _mapper.Map(model, RedeSocial);
+
+                        _redeSocialPersist.Update<RedeSocial>(RedeSocial);
+
                         await _redeSocialPersist.SaveChangesAsync();
                     }
                 }
-                var redeSocialRetorno = await _redeSocialPersist.GetAllByPalestranteIdAsync(palestranteId);
-                return _mapper.Map<RedeSocialDto[]>(redeSocialRetorno);
+
+                var RedeSocialRetorno = await _redeSocialPersist.GetAllByPalestranteIdAsync(palestranteId);
+
+                return _mapper.Map<RedeSocialDto[]>(RedeSocialRetorno);
             }
             catch (Exception ex)
             {

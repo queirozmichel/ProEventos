@@ -54,7 +54,7 @@ namespace ProEventos.Application
                 model.Id = palestrante.Id;
                 model.UserId = userId;
                 _mapper.Map(model, palestrante);
-                _palestrantePersist.Updade<Palestrante>(palestrante);
+                _palestrantePersist.Update<Palestrante>(palestrante);
 
                 if (await _palestrantePersist.SaveChangesAsync())
                 {

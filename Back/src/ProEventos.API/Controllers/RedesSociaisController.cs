@@ -77,28 +77,27 @@ namespace ProEventos.API.Controllers
             }
         }
 
+
         [HttpPut("evento/{eventoId}")]
         public async Task<IActionResult> SaveByEvento(int eventoId, RedeSocialDto[] models)
         {
             try
             {
                 if (!(await AutorEvento(eventoId)))
-                {
                     return Unauthorized();
-                }
-                var redesSociais = await _redeSocialService.SaveByEvento(eventoId, models);
-                if (redesSociais == null)
-                {
-                    return NoContent();
-                }
-                return Ok(redesSociais);
+
+                var redeSocial = await _redeSocialService.SaveByEvento(eventoId, models);
+                if (redeSocial == null) return NoContent();
+
+                return Ok(redeSocial);
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar salvar redes sociais por evento! Erro:{ex.Message}");
+                    $"Erro ao tentar salvar Rede Social por Evento. Erro: {ex.Message}");
             }
         }
+
 
         [HttpPut("palestrante")]
         public async Task<IActionResult> SaveByPalestrante(RedeSocialDto[] models)
@@ -106,22 +105,17 @@ namespace ProEventos.API.Controllers
             try
             {
                 var palestrante = await _palestranteService.GetPalestranteByUserIdAsync(User.GetUserId());
-                if (palestrante == null)
-                {
-                    return Unauthorized();
-                }
+                if (palestrante == null) return Unauthorized();
 
-                var redesSociais = await _redeSocialService.SaveByPalestrante(palestrante.Id, models);
-                if (redesSociais == null)
-                {
-                    return NoContent();
-                }
-                return Ok(redesSociais);
+                var redeSocial = await _redeSocialService.SaveByPalestrante(palestrante.Id, models);
+                if (redeSocial == null) return NoContent();
+
+                return Ok(redeSocial);
             }
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar salvar redes sociais por palestrante! Erro:{ex.Message}");
+                    $"Erro ao tentar salvar Rede Social por Palestrante. Erro: {ex.Message}");
             }
         }
 

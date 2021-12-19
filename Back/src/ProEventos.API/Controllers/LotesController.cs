@@ -70,7 +70,7 @@ namespace ProEventos.API.Controllers
                 }
 
                 return await _loteService.DeleteLote(lote.EventoId, lote.Id)
-                ? Ok(new {message = "Lote Deletado!"})
+                ? Ok(new { message = "Lote Deletado!" })
                 : throw new Exception("Ocorreu um problema especifico ao tentar deletar o lote!");
 
             }

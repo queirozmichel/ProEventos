@@ -17,7 +17,7 @@ namespace ProEventos.Persistence
             _contexto.Add(entidade);
         }
 
-        public void Updade<T>(T entidade) where T : class
+        public void Update<T>(T entidade) where T : class
         {
             _contexto.Update(entidade);
         }
